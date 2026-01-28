@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { productService } from '../services/productService'
-import { type SearchParams, type ProductsResponse } from '../types/productTypes'
+import { type SearchParams, type ProductsResponse, type Product } from '../types/productTypes'
 
 export const useInfiniteProducts = (enabled: boolean = true, category: string | null = null) => {
   return useInfiniteQuery<ProductsResponse>({
@@ -26,5 +26,14 @@ export const useSearchProducts = (params: SearchParams) => {
     queryKey: ['products', 'search', params],
     queryFn: () => productService.getProducts(params),
     staleTime: 1000 * 60, 
+  })
+}
+
+export const useProductById = (id: string | undefined) => {
+  return useQuery<Product>({
+    queryKey: ['product', id],
+    queryFn: () => productService.getProductById(id!),
+    enabled: !!id,
+    staleTime: 1000 * 60 * 5, // 5 minutes (Products don't change often)
   })
 }

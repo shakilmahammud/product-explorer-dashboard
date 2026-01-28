@@ -8,7 +8,7 @@ export function getProductColumns(): TableColumn<Product>[] {
       header: 'Product',
       render: (product) => (
         <div className="flex items-center">
-          <div className="h-10 w-10 flex-shrink-0 bg-gray-100 rounded">
+          <Link to={`/products/${product.id}`} className="h-10 w-10 flex-shrink-0 bg-gray-100 rounded hover:opacity-80 transition-opacity">
             <img
               src={product.thumbnail}
               alt={product.title}
@@ -17,14 +17,15 @@ export function getProductColumns(): TableColumn<Product>[] {
               className="h-10 w-10 rounded object-cover"
               loading="lazy"
             />
-          </div>
+          </Link>
           <div className="ml-4">
-            <div 
-              className="text-sm font-medium text-gray-900 truncate max-w-[12rem] sm:max-w-[16rem]"
+            <Link 
+              to={`/products/${product.id}`}
+              className="text-sm font-medium text-gray-900 truncate max-w-[12rem] sm:max-w-[16rem] hover:text-[#22B573] transition-colors"
               title={product.title}
             >
               {product.title}
-            </div>
+            </Link>
             <div className="text-sm text-gray-500">SKU: {product.sku}</div>
           </div>
         </div>
@@ -32,6 +33,7 @@ export function getProductColumns(): TableColumn<Product>[] {
     },
     {
       header: 'Brand',
+      className: 'hidden md:table-cell',
       render: (product) => (
         <span className="text-sm text-gray-900">
           {product.brand || '-'}
@@ -40,6 +42,7 @@ export function getProductColumns(): TableColumn<Product>[] {
     },
     {
       header: 'Category',
+      className: 'hidden md:table-cell',
       render: (product) => (
         <span className="text-sm text-gray-900 capitalize">{product.category}</span>
       ),
@@ -73,12 +76,14 @@ export function getProductColumns(): TableColumn<Product>[] {
     },
     {
       header: 'Stock',
+      className: 'hidden md:table-cell',
       render: (product) => (
         <span className="text-sm text-gray-900">{product.stock} units</span>
       ),
     },
     {
       header: 'Status',
+      className: 'hidden md:table-cell',
       render: (product) => {
         const status = product.stock > 20 ? 'In Stock' : product.stock > 0 ? 'Low Stock' : 'Out of Stock'
         const statusColor = product.stock > 20 ? 'bg-green-100 text-green-800' : product.stock > 0 ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'

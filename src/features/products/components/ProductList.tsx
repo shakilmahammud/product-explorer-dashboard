@@ -1,7 +1,8 @@
-import { useMemo, type RefObject } from 'react'
+import { useState, useMemo, useRef, type RefObject } from 'react'
 import { Table, TableSkeleton } from '../../../shared/components/Table'
 import { EmptyState, ErrorState, LoadingSpinner } from '../../../shared/components/DataDisplay'
 import { getProductColumns } from '../utils'
+import { ProductInfoCard } from './ProductInfoCard'
 import type { Product } from '../types/productTypes'
 
 interface ProductListProps {
@@ -35,6 +36,25 @@ export function ProductList({
 }: ProductListProps) {
   
   const columns = useMemo(() => getProductColumns(), [])
+  const [hoveredProduct, setHoveredProduct] = useState<Product | null>(null)
+  const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
+  const closeTimeout = useRef<any>(null)
+
+  const handleRowMouseEnter = (product: Product, e: React.MouseEvent) => {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current)
+    setHoveredProduct(product)
+    setCursorPos({ x: e.clientX, y: e.clientY })
+  }
+
+  const handleRowMouseLeave = () => {
+    closeTimeout.current = setTimeout(() => {
+      setHoveredProduct(null)
+    }, 300)
+  }
+
+  const handleCardMouseEnter = () => {
+    if (closeTimeout.current) clearTimeout(closeTimeout.current)
+  }
 
   return (
     <div className="space-y-6">
@@ -52,12 +72,14 @@ export function ProductList({
       {!isLoading && !isError && (
         <>
           {!hideTable && (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden relative">
               <div className="overflow-x-auto">
                 <Table 
                   data={products} 
                   columns={columns} 
                   rowKey={(product) => product.id.toString()} 
+                  onRowMouseEnter={handleRowMouseEnter}
+                  onRowMouseLeave={handleRowMouseLeave}
                 />
               </div>
             </div>
@@ -87,6 +109,24 @@ export function ProductList({
       )}
 
       {sentinelRef && <div ref={sentinelRef} className="h-10" />}
+
+      {hoveredProduct && (
+        <div 
+          className="hidden md:block fixed z-50 pointer-events-auto transition-opacity duration-200"
+          style={{ 
+            top: cursorPos.y + 15, 
+            left: cursorPos.x + 15 
+          }}
+          onMouseEnter={handleCardMouseEnter}
+          onMouseLeave={handleRowMouseLeave}
+        >
+          <div className="bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden">
+             <div onClick={(e) => e.stopPropagation()}>
+                <ProductInfoCard product={hoveredProduct} />
+             </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
