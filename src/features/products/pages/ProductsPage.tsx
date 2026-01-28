@@ -1,10 +1,29 @@
+import { useProductFilters } from '../hooks/useProductFilters'
+import { useProductData } from '../hooks/useProductData'
+import { ProductsLayout } from '../components/ProductsLayout'
+
 export function ProductsPage() {
+  const { filters, handlers, isSearchActive } = useProductFilters()
+  
+  const { 
+    displayProducts, 
+    status, 
+    actions, 
+    sentinelRef 
+  } = useProductData({
+    isSearchActive,
+    ...filters
+  })
+
   return (
-    <div>
-      <h1 className="text-3xl font-bold mb-4">Products</h1>
-      <p className="text-gray-600">
-        Browse all available products with infinite scrolling, filtering by category, and sorting by price.
-      </p>
-    </div>
+    <ProductsLayout
+      products={displayProducts}
+      filters={filters}
+      handlers={handlers}
+      status={status}
+      actions={actions}
+      sentinelRef={sentinelRef}
+      isSearchActive={isSearchActive}
+    />
   )
 }
