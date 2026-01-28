@@ -5,7 +5,7 @@ import { useProductsUIStore } from '../store/productsUI.store'
 export function useProductFilters() {
   const [searchParams, setSearchParams] = useSearchParams()
   
-  const query = searchParams.get('search_data') || ''
+  const query = searchParams.get('q') || ''
   const urlCategory = searchParams.get('category')
   const urlSortBy = (searchParams.get('sortBy') as 'title' | 'price' | 'rating') || null
   const urlSortOrder = (searchParams.get('order') as 'asc' | 'desc') || 'asc'
@@ -32,10 +32,10 @@ export function useProductFilters() {
     setSearchParams((prev) => {
         const params = new URLSearchParams(prev)
         if (newQuery) {
-            params.set('search_data', newQuery)
+            params.set('q', newQuery)
             params.delete('category')
         } else {
-            params.delete('search_data')
+            params.delete('q')
         }
         return params
     }, { replace: true })
@@ -60,7 +60,7 @@ export function useProductFilters() {
         const params = new URLSearchParams(prev)
         if (category) {
             params.set('category', category)
-            params.delete('search_data')
+            params.delete('q')
         } else {
             params.delete('category')
         }
