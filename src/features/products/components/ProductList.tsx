@@ -97,7 +97,7 @@ export function ProductList({
 
       {isFetchingNextPage && (
         <div className="flex justify-center items-center py-4 gap-2">
-          <LoadingSpinner size="md" className="text-blue-600" />
+          <LoadingSpinner size="md" className="text-[#22B573]" />
           <span className="text-sm text-gray-500">Loading more products...</span>
         </div>
       )}
