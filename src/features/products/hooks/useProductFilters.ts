@@ -5,7 +5,6 @@ import { useProductsUIStore } from '../store/productsUI.store'
 export function useProductFilters() {
   const [searchParams, setSearchParams] = useSearchParams()
   
-  // URL Params
   const query = searchParams.get('search_data') || ''
   const urlCategory = searchParams.get('category')
   const urlSortBy = (searchParams.get('sortBy') as 'title' | 'price' | 'rating') || null
@@ -29,7 +28,6 @@ export function useProductFilters() {
     
   }, [urlCategory, urlSortBy, urlSortOrder, query, setSelectedCategory, setSortBy, setSortOrder, setSearchQuery])
 
-  // Handlers (Update URL, which triggers effect to update store)
   const handleSearch = useCallback((newQuery: string) => {
     setSearchParams((prev) => {
         const params = new URLSearchParams(prev)

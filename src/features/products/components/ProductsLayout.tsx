@@ -1,6 +1,6 @@
 import { type RefObject } from 'react'
 import { SearchBar, SortDropdown, CategoryFilter, ProductList } from '../components'
-import type { Product } from '../types/productTypes'
+import type { Product, Category } from '../types/productTypes'
 
 interface ProductsLayoutProps {
   products: Product[]
@@ -32,6 +32,12 @@ interface ProductsLayoutProps {
   showSort?: boolean
   showCategoryFilter?: boolean
   pagination?: React.ReactNode
+  emptyStateTitle?: string
+  emptyStateMessage?: string
+  hideStats?: boolean
+  hideTable?: boolean
+  hideAction?: boolean
+  availableCategories?: Category[]
 }
 
 export function ProductsLayout({
@@ -46,12 +52,18 @@ export function ProductsLayout({
   showSearch = true,
   showSort = true,
   showCategoryFilter = true,
-  pagination
+  pagination,
+  emptyStateTitle,
+  emptyStateMessage,
+  hideStats,
+  hideTable,
+  hideAction,
+  availableCategories
 }: ProductsLayoutProps) {
   
   const { isLoading, isError, error, isFetchingNextPage } = status
 
-  const emptyStateMessage = isSearchActive 
+  const _emptyStateMessage = isSearchActive 
     ? `We couldn't find any products matching "${filters.query}". Try adjusting your search or filters.` 
     : "No products available in this category."
 
@@ -70,14 +82,16 @@ export function ProductsLayout({
         <h1 className="text-3xl font-bold text-gray-900">
           {title}
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
-          {isSearchActive 
-            ? `Found ${products.length} results for "${filters.query}"`
-            : filters.category 
-              ? `Showing ${products.length} products in ${filters.category}`
-              : `Showing ${products.length} products`
-          }
-        </p>
+        {!hideStats && (
+          <p className="text-sm text-gray-500 mt-1">
+            {isSearchActive 
+              ? `Found ${products.length} results for "${filters.query}"`
+              : filters.category 
+                ? `Showing ${products.length} products in ${filters.category}`
+                : `Showing ${products.length} products`
+            }
+          </p>
+        )}
       </div>
 
       {(showSearch || showSort || showCategoryFilter) && (
@@ -93,7 +107,7 @@ export function ProductsLayout({
           )}
           
           {(showSort || showCategoryFilter) && (
-            <div className="flex items-center gap-4 w-full sm:w-auto flex-shrink-0">
+            <div className="flex items-center gap-4 w-full sm:w-auto flex-shrink-0 ml-auto">
               {showSort && (
                 <div className="w-1/2 sm:w-auto">
                   <SortDropdown
@@ -107,7 +121,8 @@ export function ProductsLayout({
                 <div className="w-1/2 sm:w-auto">
                   <CategoryFilter 
                     selectedCategory={filters.category}
-                    onCategorySelect={handlers.handleCategoryChange} 
+                    onCategorySelect={handlers.handleCategoryChange}
+                    availableCategories={availableCategories}
                   />
                 </div>
               )}
@@ -125,9 +140,10 @@ export function ProductsLayout({
         onRetry={actions.refetch}
         sentinelRef={sentinelRef}
         pagination={pagination}
-        emptyStateTitle="No products found"
-        emptyStateMessage={emptyStateMessage}
-        emptyStateAction={(isSearchActive || filters.category) ? emptyStateAction : undefined} 
+        emptyStateTitle={emptyStateTitle || "No products found"}
+        emptyStateMessage={emptyStateMessage || _emptyStateMessage}
+        emptyStateAction={(!hideAction && (isSearchActive || filters.category)) ? emptyStateAction : undefined}
+        hideTable={hideTable}
       />
     </div>
   )

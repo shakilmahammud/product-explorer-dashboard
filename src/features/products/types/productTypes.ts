@@ -26,12 +26,17 @@ export interface SearchParams {
   sortBy?: SortOption
   limit?: number
   skip?: number
+  order?: 'asc' | 'desc'
 }
 
 export type SortOption = 
+  | 'title'
+  | 'price'
+  | 'rating'
   | 'title-desc' 
   | 'price-asc' 
   | 'price-desc'
+
 
 export interface Category {
   slug: string

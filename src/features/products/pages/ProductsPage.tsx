@@ -11,7 +11,6 @@ export function ProductsPage() {
     actions, 
     sentinelRef 
   } = useProductData({
-    isSearchActive,
     ...filters
   })
 

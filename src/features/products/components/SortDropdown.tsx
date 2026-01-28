@@ -31,7 +31,6 @@ export function SortDropdown({ sortBy, sortOrder, onSortChange }: SortDropdownPr
       case 'title-desc': return 'Title (Z-A)'
       case 'price-asc': return 'Price (Low to High)'
       case 'price-desc': return 'Price (High to Low)'
-      case 'rating-desc': return 'Rating (High to Low)'
       default: return 'Sort'
     }
   }
@@ -103,14 +102,6 @@ export function SortDropdown({ sortBy, sortOrder, onSortChange }: SortDropdownPr
               `}
             >
               Price (High to Low)
-            </button>
-             <button
-              onClick={() => handleSelect('rating', 'desc')}
-              className={`w-full text-left px-3 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors
-                ${sortBy === 'rating' && sortOrder === 'desc' ? 'bg-[#22B573]/10 text-[#22B573] font-medium' : 'text-gray-700'}
-              `}
-            >
-              Rating (High to Low)
             </button>
           </div>
         </div>

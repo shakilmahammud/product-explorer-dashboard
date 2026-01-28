@@ -16,6 +16,7 @@ interface ProductListProps {
   emptyStateTitle?: string
   emptyStateMessage?: string
   emptyStateAction?: React.ReactNode
+  hideTable?: boolean
 }
 
 export function ProductList({
@@ -29,7 +30,8 @@ export function ProductList({
   pagination,
   emptyStateTitle = "No products found",
   emptyStateMessage = "No products available.",
-  emptyStateAction
+  emptyStateAction,
+  hideTable = false
 }: ProductListProps) {
   
   const columns = useMemo(() => getProductColumns(), [])
@@ -49,17 +51,19 @@ export function ProductList({
 
       {!isLoading && !isError && (
         <>
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <Table 
-                data={products} 
-                columns={columns} 
-                rowKey={(product) => product.id.toString()} 
-              />
+          {!hideTable && (
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+              <div className="overflow-x-auto">
+                <Table 
+                  data={products} 
+                  columns={columns} 
+                  rowKey={(product) => product.id.toString()} 
+                />
+              </div>
             </div>
-          </div>
+          )}
 
-          {products.length === 0 && (
+          {(products.length === 0 || hideTable) && (
             <EmptyState 
               title={emptyStateTitle}
               message={emptyStateMessage}

@@ -1,32 +1,30 @@
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { productService } from '../services/productService'
+import { type SearchParams, type ProductsResponse } from '../types/productTypes'
 
-export function useInfiniteProducts(enabled = true, category?: string | null) {
-  return useInfiniteQuery({
-    queryKey: ['products', category],
-    queryFn: ({ pageParam = 0 }) => 
-      category 
-        ? productService.fetchProductsByCategory(category, 20, pageParam)
-        : productService.fetchProducts(20, pageParam),
-    getNextPageParam: (lastPage, allPages) => {
-      const loadedCount = allPages.flatMap(p => p.products).length
-      return loadedCount < lastPage.total ? loadedCount : undefined
+export const useInfiniteProducts = (enabled: boolean = true, category: string | null = null) => {
+  return useInfiniteQuery<ProductsResponse>({
+    queryKey: ['products', 'infinite', category],
+    queryFn: ({ pageParam = 0 }) => {
+      return productService.getProducts({ 
+        category: category || undefined, 
+        limit: 20, 
+        skip: pageParam as number
+      })
     },
     initialPageParam: 0,
-    enabled,
+    getNextPageParam: (lastPage) => {
+      const nextSkip = lastPage.skip + lastPage.limit
+      return nextSkip < lastPage.total ? nextSkip : undefined
+    },
+    enabled
   })
 }
 
-export function useSearchProducts(searchQuery: string) {
-  return useInfiniteQuery({
-    queryKey: ['products', 'search', searchQuery],
-    queryFn: ({ pageParam = 0 }) =>
-      productService.searchProducts({ query: searchQuery, limit: 20, skip: pageParam }),
-    getNextPageParam: (lastPage, allPages) => {
-      const loadedCount = allPages.flatMap(p => p.products).length
-      return loadedCount < lastPage.total ? loadedCount : undefined
-    },
-    initialPageParam: 0,
-    enabled: searchQuery.length > 0,
+export const useSearchProducts = (params: SearchParams) => {
+  return useQuery<ProductsResponse>({
+    queryKey: ['products', 'search', params],
+    queryFn: () => productService.getProducts(params),
+    staleTime: 1000 * 60, 
   })
 }
