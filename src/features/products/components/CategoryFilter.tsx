@@ -7,19 +7,23 @@ import { useOnClickOutside } from '../../../shared/hooks/useOnClickOutside'
 interface CategoryFilterProps {
   selectedCategory: string | null
   onCategorySelect: (category: string | null) => void
+  availableCategories?: Category[]
 }
 
-export function CategoryFilter({ selectedCategory, onCategorySelect }: CategoryFilterProps) {
+export function CategoryFilter({ selectedCategory, onCategorySelect, availableCategories }: CategoryFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [filterText, setFilterText] = useState('')
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useOnClickOutside(dropdownRef, () => setIsOpen(false))
 
-  const { data: categories = [] } = useQuery<Category[]>({
+  const { data: fetchedCategories = [] } = useQuery<Category[]>({
     queryKey: ['categories'],
     queryFn: () => productService.getCategories(),
+    enabled: !availableCategories, 
   })
+
+  const categories = availableCategories || fetchedCategories
 
   const filteredCategories = useMemo(() => {
     if (!filterText) return categories
