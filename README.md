@@ -30,8 +30,8 @@ A modern, responsive React application built with TypeScript, Vite, React Query,
 
 # 2. Scalability Refactors
 If this application were to scale significantly, I would prioritize:
-# Component Granularity**: Refactoring large feature components into smaller, memoized sub-components to prevent unnecessary re-renders in massive data tables.
-# Advanced State Selectors**: Implementing strict Zustand selectors and immutable state patterns to optimize the render path.
+**Component Granularity**: Refactoring large feature components into smaller, memoized sub-components to prevent unnecessary re-renders in massive data tables.
+**Advanced State Selectors**: Implementing strict Zustand selectors and immutable state patterns to optimize the render path.
 
 # 3. AI Usage & Verification
 I used AI to explore ideas and sample implementations, then verified correctness by manually reviewing the logic, testing API behavior, and refining the solution before implementing my own approach.
