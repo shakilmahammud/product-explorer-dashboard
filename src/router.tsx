@@ -3,7 +3,6 @@ import App from './App'
 import { ProductsPage } from './features/products/pages/ProductsPage'
 import { ProductDetailsPage } from './features/products/pages/ProductDetailsPage'
 import { CategoriesPage } from './features/products/pages/CategoriesPage'
-import { SearchPage } from './features/products/pages/SearchPage'
 import { SettingsPage } from './features/settings/pages/SettingsPage'
 
 export const router = createBrowserRouter([
@@ -25,7 +24,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'products/search',
-        element: <SearchPage />,
+        element: <ProductsPage />,
       },
       {
         path: 'settings',
