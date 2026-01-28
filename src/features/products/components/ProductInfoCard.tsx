@@ -1,10 +1,13 @@
 import { type Product } from '../types/productTypes'
+import { useSettings } from '../../../shared/context/SettingsContext'
 
 interface ProductInfoCardProps {
   product: Product
 }
 
 export function ProductInfoCard({ product }: ProductInfoCardProps) {
+  const { formatPrice } = useSettings()
+
   const discountPrice = product.price 
   const originalPrice = product.discountPercentage 
     ? (product.price / (1 - product.discountPercentage / 100))
@@ -33,9 +36,9 @@ export function ProductInfoCard({ product }: ProductInfoCardProps) {
              <span className="text-xs text-gray-500">({product.reviews?.length || 0})</span>
           </div>
           <div className="flex items-baseline gap-2">
-            <span className="text-lg font-bold text-[#22B573]">${discountPrice.toFixed(2)}</span>
+            <span className="text-lg font-bold text-[#22B573]">{formatPrice(discountPrice)}</span>
             {originalPrice && (
-              <span className="text-xs text-gray-400 line-through">${originalPrice.toFixed(2)}</span>
+              <span className="text-xs text-gray-400 line-through">{formatPrice(originalPrice)}</span>
             )}
           </div>
         </div>

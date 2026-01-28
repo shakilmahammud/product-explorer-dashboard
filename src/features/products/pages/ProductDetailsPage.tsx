@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useProductById } from '../queries/productsQueries'
 import { LoadingSpinner } from '../../../shared/components/DataDisplay'
+import { useSettings } from '../../../shared/context/SettingsContext'
 
 export function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { data: product, isLoading, error } = useProductById(id)
+  const { formatPrice } = useSettings()
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [quantity, setQuantity] = useState(1)
   const [activeTab, setActiveTab] = useState<'description' | 'specifications' | 'reviews'>('description')
@@ -110,10 +112,10 @@ export function ProductDetailsPage() {
             </div>
 
             <div className="text-3xl font-bold text-[#22B573] mb-6">
-              ${discountPrice.toFixed(2)}
+              {formatPrice(discountPrice)}
               {originalPrice && (
                 <span className="text-lg text-gray-400 line-through ml-3 font-normal">
-                  ${originalPrice.toFixed(2)}
+                  {formatPrice(originalPrice)}
                 </span>
               )}
             </div>

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { type TableColumn } from '../../../shared/components/Table'
 import { type Product } from '../types/productTypes'
 
-export function getProductColumns(): TableColumn<Product>[] {
+export function getProductColumns(formatPrice: (price: number) => string): TableColumn<Product>[] {
   return [
     {
       header: 'Product',
@@ -56,11 +56,11 @@ export function getProductColumns(): TableColumn<Product>[] {
         return hasDiscount ? (
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-gray-900">
-              ${finalPrice.toFixed(2)}
+              {formatPrice(finalPrice)}
             </span>
             <div className="flex items-center gap-1">
               <span className="text-xs text-gray-500 line-through">
-                ${product.price.toFixed(2)}
+                {formatPrice(product.price)}
               </span>
               <span className="text-xs font-semibold text-red-600">
                 -{(product.discountPercentage || 0).toFixed(0)}%
@@ -69,7 +69,7 @@ export function getProductColumns(): TableColumn<Product>[] {
           </div>
         ) : (
           <span className="text-sm font-semibold text-gray-900">
-            ${product.price.toFixed(2)}
+            {formatPrice(product.price)}
           </span>
         )
       },

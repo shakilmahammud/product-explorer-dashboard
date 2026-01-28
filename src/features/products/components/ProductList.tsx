@@ -3,7 +3,8 @@ import { Table, TableSkeleton } from '../../../shared/components/Table'
 import { EmptyState, ErrorState, LoadingSpinner } from '../../../shared/components/DataDisplay'
 import { getProductColumns } from '../utils'
 import { ProductInfoCard } from './ProductInfoCard'
-import type { Product } from '../types/productTypes'
+import { type Product } from '../types/productTypes'
+import { useSettings } from '../../../shared/context/SettingsContext'
 
 interface ProductListProps {
   products: Product[]
@@ -35,7 +36,8 @@ export function ProductList({
   hideTable = false
 }: ProductListProps) {
   
-  const columns = useMemo(() => getProductColumns(), [])
+  const { formatPrice } = useSettings()
+  const columns = useMemo(() => getProductColumns(formatPrice), [formatPrice])
   const [hoveredProduct, setHoveredProduct] = useState<Product | null>(null)
   const [cursorPos, setCursorPos] = useState({ x: 0, y: 0 })
   const closeTimeout = useRef<any>(null)
