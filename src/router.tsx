@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import App from './App'
 import { ProductsPage } from './features/products/pages/ProductsPage'
 import { ProductDetailsPage } from './features/products/pages/ProductDetailsPage'
@@ -11,6 +11,10 @@ export const router = createBrowserRouter([
     path: '/',
     element: <App />,
     children: [
+      {
+        index: true,
+        element: <Navigate to="/products" replace />,
+      },
       {
         path: 'products',
         element: <ProductsPage />,

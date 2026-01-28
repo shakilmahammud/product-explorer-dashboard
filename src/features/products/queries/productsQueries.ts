@@ -2,12 +2,13 @@ import { useInfiniteQuery, useQuery } from '@tanstack/react-query'
 import { productService } from '../services/productService'
 import { type SearchParams, type ProductsResponse, type Product, type Category } from '../types/productTypes'
 
-export const useInfiniteProducts = (enabled: boolean = true, category: string | null = null) => {
+export const useInfiniteProducts = (enabled: boolean = true, category: string | null = null, query: string | null = null) => {
   return useInfiniteQuery<ProductsResponse>({
-    queryKey: ['products', 'infinite', category],
+    queryKey: ['products', 'infinite', category, query],
     queryFn: ({ pageParam = 0 }) => {
       return productService.getProducts({ 
         category: category || undefined, 
+        query: query || undefined,
         limit: 20, 
         skip: pageParam as number
       })

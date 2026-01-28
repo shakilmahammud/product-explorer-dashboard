@@ -4,18 +4,20 @@ import { useIntersectionObserver } from '../../../shared/hooks/useIntersectionOb
 import { sortProducts } from '../utils/productSorting'
 
 interface UseProductDataProps {
+  query: string
   category: string | null
   sortBy: 'title' | 'price' | 'rating' | null
   sortOrder: 'asc' | 'desc'
 }
 
 export function useProductData({
+  query,
   category,
   sortBy,
   sortOrder
 }: UseProductDataProps) {
   
-  const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteProducts(true, category)
+  const { data, isLoading, isError, error, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteProducts(true, category, query)
 
   const sentinelRef = useIntersectionObserver({
     onIntersect: () => {
