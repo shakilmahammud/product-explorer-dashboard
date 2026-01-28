@@ -60,9 +60,9 @@ export const Header = () => {
   return (
     <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between gap-4 md:gap-0 h-16">
           
-          <div className={`${isMobileSearchOpen ? 'hidden md:block' : 'flex-shrink-0'}`}>
+          <div className={`${isMobileSearchOpen ? 'hidden md:block' : 'flex-shrink-0'} md:flex-shrink-0`}>
             <NavLink to="/products" className="text-2xl font-bold text-[#22B573]">
               PED
             </NavLink>
@@ -128,7 +128,7 @@ export const Header = () => {
           </div>
 
           {/* Settings & Mobile Actions */}
-          <div className={`flex items-center gap-2 sm:gap-4 ${isMobileSearchOpen ? 'flex-1' : ''}`}>
+          <div className={`flex items-center gap-2 sm:gap-4 ${isMobileSearchOpen ? 'flex-1 md:flex-initial' : ''}`}>
             <div className="hidden md:block">
               <NavLink
                 to="/settings"

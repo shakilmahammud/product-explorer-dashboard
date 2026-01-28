@@ -2,7 +2,6 @@ import { useMemo, useCallback, useEffect } from 'react'
 import { useSearchProducts } from '../queries/productsQueries'
 import { useProductsUIStore } from '../store/productsUI.store'
 import { useSearchUrlState } from './useSearchUrlState'
-import { sortProducts } from '../utils/productSorting'
 
 export const useSearchPage = () => {
   const { state: urlState, updateParams, clearParams } = useSearchUrlState()
@@ -35,12 +34,7 @@ export const useSearchPage = () => {
     }))
   }, [data?.products])
 
-  const products = useMemo(() => {
-    const rawProducts = data?.products || []
-    const sortKey = sortBy && sortOrder ? `${sortBy}-${sortOrder}` : ''
-    return sortProducts(rawProducts, sortKey)
-  }, [data?.products, sortBy, sortOrder])
-
+  const products = data?.products || []
   const total = data?.total || 0
   const totalPages = Math.ceil(total / 20)
 

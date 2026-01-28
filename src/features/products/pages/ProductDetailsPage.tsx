@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { useProductById } from '../queries/productsQueries'
+import { LoadingSpinner } from '../../../shared/components/DataDisplay'
 
 export function ProductDetailsPage() {
   const { id } = useParams<{ id: string }>()
@@ -18,8 +19,9 @@ export function ProductDetailsPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#22B573]"></div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex justify-center items-center h-screen gap-2">
+        <LoadingSpinner size="lg" color="#22B573" />
+        <span className="text-sm text-gray-500">Loading product details...</span>
       </div>
     )
   }
