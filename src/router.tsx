@@ -5,11 +5,16 @@ import { ProductDetailsPage } from './features/products/pages/ProductDetailsPage
 import { CategoriesPage } from './features/products/pages/CategoriesPage'
 import { SettingsPage } from './features/settings/pages/SettingsPage'
 import { SearchPage } from './features/products/pages/SearchPage'
+import { RouteError } from './shared/components/Error/RouteError'
+import { NotFound } from './pages/NotFound'
+
+
 
 export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <RouteError />,
     children: [
       {
         index: true,
@@ -35,6 +40,10 @@ export const router = createBrowserRouter([
         path: 'settings',
         element: <SettingsPage />,
       },
+      {
+        path: '*',
+        element: <NotFound />,
+      }
     ],
   },
 ])
